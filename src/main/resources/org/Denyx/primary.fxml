@@ -1,16 +1,146 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Button?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Denyx.PrimaryController">
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #bcbcbc;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.Denyx.PrimaryController">
    <children>
-      <Label text="Primary View" />
-      <Button fx:id="primaryButton" text="Switch to Secondary View" onAction="#switchToSecondary"/>
+      <MenuBar prefHeight="28.0" prefWidth="600.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+                  <MenuItem fx:id="openButton" mnemonicParsing="false" text="Open" />
+              <MenuItem fx:id="saveButton" mnemonicParsing="false" text="Save" />
+                  <MenuItem fx:id="saveAsButton" mnemonicParsing="false" text="Save As" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem fx:id="redoButton" mnemonicParsing="false" text="Redo" />
+                  <MenuItem fx:id="undoButton" mnemonicParsing="false" text="Undo" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem fx:id="aboutButton" mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <AnchorPane layoutY="114.0" prefHeight="286.0" prefWidth="600.0" style="-fx-background-color: #FFFFFF;" />
+      <GridPane alignment="CENTER" gridLinesVisible="true" layoutX="14.0" layoutY="56.0" prefHeight="57.0" prefWidth="95.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <ImageView fx:id="lineFigure" fitHeight="32.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../assets/line.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fx:id="rectangleFigure" fitHeight="32.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
+               <image>
+                  <Image url="@../../assets/rectangle.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fx:id="circleFigure" fitHeight="100.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
+               <image>
+                  <Image url="@../../assets/circle.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets left="2.0" />
+               </GridPane.margin>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fx:id="polygonFigure" fitHeight="30.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
+               <image>
+                  <Image url="@../../assets/polygon.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fx:id="polylineFigure" fitHeight="27.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <image>
+                  <Image url="@../../assets/polyline.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets left="2.5" />
+               </GridPane.margin>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fx:id="ellipsisButton" fitHeight="26.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="1">
+               <image>
+                  <Image url="@../../assets/ellipsis.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets left="3.5" />
+               </GridPane.margin>
+               <cursor>
+                  <Cursor fx:constant="DISAPPEAR" />
+               </cursor>
+            </ImageView>
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </GridPane>
+      <Label layoutX="16.0" layoutY="32.0" text="Choose Figure:">
+         <font>
+            <Font name="AppleGothic Regular" size="13.0" />
+         </font>
+      </Label>
+      <ColorPicker fx:id="colorPicker" layoutX="236.0" layoutY="56.0">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ColorPicker>
+      <Label layoutX="257.0" layoutY="32.0" text="Choose Color:">
+         <font>
+            <Font name="AppleGothic Regular" size="13.0" />
+         </font>
+      </Label>
+      <TextField fx:id="chooseWidthField" layoutX="491.0" layoutY="56.0" prefHeight="26.0" prefWidth="95.0" />
+      <Label layoutX="496.0" layoutY="32.0" text="Choose Width:">
+         <font>
+            <Font name="AppleGothic Regular" size="13.0" />
+         </font>
+      </Label>
+      <Button fx:id="setBoundsButton" layoutX="491.0" layoutY="87.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="95.0" text="Set Bounds">
+         <cursor>
+            <Cursor fx:constant="DISAPPEAR" />
+         </cursor>
+      </Button>
    </children>
-   <padding>
-      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-   </padding>
-</VBox>
+</AnchorPane>
