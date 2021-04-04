@@ -15,10 +15,12 @@ public class PolylineFigure extends Figure {
 
     @Override
     public void draw(List<double[]> figureCoords, GraphicsContext gc) {
-        gc.setStroke(getStrokeFigureColor());
-        gc.setLineWidth(getFigureLineWidth());
-        double[] startCoords = figureCoords.get(0);
-        double[] endCoords = figureCoords.get(1);
-        gc.strokeLine(startCoords[0], startCoords[1], endCoords[0], endCoords[1]);
+        if (figureCoords.size() > 1) {
+            gc.setStroke(getStrokeFigureColor());
+            gc.setLineWidth(getFigureLineWidth());
+            double[] startCoords = figureCoords.get(figureCoords.size() - 2);
+            double[] endCoords = figureCoords.get(figureCoords.size() - 1);
+            gc.strokeLine(startCoords[0], startCoords[1], endCoords[0], endCoords[1]);
+        }
     }
 }

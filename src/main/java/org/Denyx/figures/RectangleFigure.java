@@ -1,10 +1,6 @@
 package org.Denyx.figures;
 
-import javafx.scene.Group;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.Rectangle;
-
 import java.util.List;
 
 public class RectangleFigure extends Figure {

@@ -11,6 +11,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import org.Denyx.actions.Actions;
 import org.Denyx.figures.*;
@@ -119,13 +120,17 @@ public class PrimaryController {
         undoButton.setOnAction(actionEvent -> Actions.showAlertWindow("info", "Coming soon...", "Will be available in the next updates!"));
         redoButton.setOnAction(actionEvent -> Actions.showAlertWindow("info", "Coming soon...", "Will be available in the next updates!"));
         aboutButton.setOnAction(actionEvent -> Actions.showAlertWindow("info", "About", "TapsDraw by Denyx"));
-        clearButton.setOnAction(actionEvent -> Actions.clear(drawGraphicsContext));
+        clearButton.setOnAction(actionEvent -> {
+            Actions.clear(drawGraphicsContext);
+            figureCoords.clear();
+        });
 
         lineFigure.setOnMouseClicked(mouseEvent -> {
             buttonsClearBackground();
             fillCheckbox.setSelected(false);
             lineBackground.setStyle("-fx-background-color: #FFFFFF");
             currentFigure = new LineFigure();
+            figureCoords.clear();
         });
 
         rectangleFigure.setOnMouseClicked(mouseEvent -> {
@@ -133,6 +138,7 @@ public class PrimaryController {
             fillCheckbox.setSelected(false);
             rectangleBackground.setStyle("-fx-background-color: #FFFFFF");
             currentFigure = new RectangleFigure();
+            figureCoords.clear();
         });
 
         circleFigure.setOnMouseClicked(mouseEvent -> {
@@ -140,22 +146,25 @@ public class PrimaryController {
             fillCheckbox.setSelected(false);
             circleBackground.setStyle("-fx-background-color: #FFFFFF");
             currentFigure = new CircleFigure();
+            figureCoords.clear();
         });
 
         polygonFigure.setOnMouseClicked(mouseEvent -> {
             buttonsClearBackground();
             fillCheckbox.setSelected(false);
             polygonBackground.setStyle("-fx-background-color: #FFFFFF");
-            currentFigure = null;
-            Actions.showAlertWindow("info", "Coming soon...", "Will be available in the next updates!");
+            currentFigure = new PolygonFigure();
+            currentFigure.setFigureType("polygon");
+            Actions.showAlertWindow("info", "Help", "To stop drawing press ENTER");
         });
 
         polylineFigure.setOnMouseClicked(mouseEvent -> {
             buttonsClearBackground();
             fillCheckbox.setSelected(false);
             polylineBackground.setStyle("-fx-background-color: #FFFFFF");
-            currentFigure = null;
-            Actions.showAlertWindow("info", "Coming soon...", "Will be available in the next updates!");
+            currentFigure = new PolylineFigure();
+            currentFigure.setFigureType("polyline");
+            Actions.showAlertWindow("info", "Help", "To stop drawing press ENTER");
         });
 
         fillCheckbox.setOnAction(actionEvent -> {
@@ -169,9 +178,11 @@ public class PrimaryController {
             if (currentFigure == null) {
                 Actions.showAlertWindow("error", "Choose Figure", "Please, select figure to draw");
             } else {
-                previewStartCoords[0] = mouseEvent.getX();
-                previewStartCoords[1] = mouseEvent.getY();
-                figureCoords.add(new double[] {mouseEvent.getX(), mouseEvent.getY()});
+                if (figureCoords.size() < 1) {
+                    previewStartCoords[0] = mouseEvent.getX();
+                    previewStartCoords[1] = mouseEvent.getY();
+                    figureCoords.add(new double[] {mouseEvent.getX(), mouseEvent.getY()});
+                }
             }
         });
 
@@ -181,7 +192,11 @@ public class PrimaryController {
                 currentFigure.setFigureLineWidth(Integer.parseInt(chooseWidthField.getText()));
                 previewZone.setVisible(true);
                 double[] endCoords = new double[] {mouseEvent.getX(), mouseEvent.getY()};
-                currentFigure.preview(previewStartCoords, endCoords, previewGraphicsContext);
+                if (figureCoords.size() < 1) {
+                    currentFigure.preview(previewStartCoords, endCoords, previewGraphicsContext);
+                } else {
+                    currentFigure.preview(figureCoords.get(figureCoords.size() - 1), endCoords, previewGraphicsContext);
+                }
             }
         });
 
@@ -191,8 +206,16 @@ public class PrimaryController {
                 previewZone.setVisible(false);
                 currentFigure.draw(figureCoords, drawGraphicsContext);
                 previewStartCoords = new double[] {NaN, NaN};
-                figureCoords.clear();
+                if (currentFigure.getFigureType() != "polyline" && currentFigure.getFigureType() != "polygon"){
+                    figureCoords.clear();
+                }
                 drawZone.requestFocus();
+            }
+        });
+
+        drawZone.setOnKeyReleased(keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.ENTER) {
+                figureCoords.clear();
             }
         });
 

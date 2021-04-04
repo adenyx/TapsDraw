@@ -7,7 +7,7 @@ import java.util.List;
 
 public abstract class Figure {
 
-    private String figureType; // for future updates
+    private String figureType;
     private Color lineColor;
     private Color fillColor;
     private int lineWidth;
