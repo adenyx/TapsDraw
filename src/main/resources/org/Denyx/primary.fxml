@@ -2,7 +2,8 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
-<?import javafx.scene.control.Button?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ColorPicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
@@ -14,6 +15,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
@@ -33,6 +35,7 @@
             <items>
               <MenuItem fx:id="redoButton" mnemonicParsing="false" text="Redo" />
                   <MenuItem fx:id="undoButton" mnemonicParsing="false" text="Undo" />
+                  <MenuItem fx:id="clearButton" mnemonicParsing="false" text="Clear" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
@@ -42,7 +45,12 @@
           </Menu>
         </menus>
       </MenuBar>
-      <AnchorPane layoutY="114.0" prefHeight="286.0" prefWidth="600.0" style="-fx-background-color: #FFFFFF;" />
+      <AnchorPane layoutY="114.0" prefHeight="286.0" prefWidth="600.0" style="-fx-background-color: #FFFFFF;">
+         <children>
+            <Canvas fx:id="drawZone" height="286.0" width="600.0" />
+            <Canvas fx:id="previewZone" height="286.0" width="600.0" />
+         </children>
+      </AnchorPane>
       <GridPane alignment="CENTER" gridLinesVisible="true" layoutX="14.0" layoutY="56.0" prefHeight="57.0" prefWidth="95.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -54,6 +62,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
+            <Pane fx:id="lineBackground" prefHeight="200.0" prefWidth="200.0" />
             <ImageView fx:id="lineFigure" fitHeight="32.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../assets/line.png" />
@@ -62,6 +71,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </ImageView>
+            <Pane fx:id="rectangleBackground" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" />
             <ImageView fx:id="rectangleFigure" fitHeight="32.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
                <image>
                   <Image url="@../../assets/rectangle.png" />
@@ -70,6 +80,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </ImageView>
+            <Pane fx:id="circleBackground" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" />
             <ImageView fx:id="circleFigure" fitHeight="100.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
                <image>
                   <Image url="@../../assets/circle.png" />
@@ -81,6 +92,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </ImageView>
+            <Pane fx:id="polygonBackground" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" />
             <ImageView fx:id="polygonFigure" fitHeight="30.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
                <image>
                   <Image url="@../../assets/polygon.png" />
@@ -89,6 +101,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </ImageView>
+            <Pane fx:id="polylineBackground" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <ImageView fx:id="polylineFigure" fitHeight="27.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <image>
                   <Image url="@../../assets/polyline.png" />
@@ -100,6 +113,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </ImageView>
+            <Pane fx:id="ellipsesBackground" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
             <ImageView fx:id="ellipsisButton" fitHeight="26.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="1">
                <image>
                   <Image url="@../../assets/ellipsis.png" />
@@ -121,7 +135,7 @@
             <Font name="AppleGothic Regular" size="13.0" />
          </font>
       </Label>
-      <ColorPicker fx:id="colorPicker" layoutX="236.0" layoutY="56.0">
+      <ColorPicker fx:id="strokeColorPicker" layoutX="236.0" layoutY="56.0">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
@@ -131,16 +145,19 @@
             <Font name="AppleGothic Regular" size="13.0" />
          </font>
       </Label>
-      <TextField fx:id="chooseWidthField" layoutX="491.0" layoutY="56.0" prefHeight="26.0" prefWidth="95.0" />
+      <TextField fx:id="chooseWidthField" layoutX="491.0" layoutY="56.0" prefHeight="26.0" prefWidth="95.0" text="10" />
       <Label layoutX="496.0" layoutY="32.0" text="Choose Width:">
          <font>
             <Font name="AppleGothic Regular" size="13.0" />
          </font>
       </Label>
-      <Button fx:id="setBoundsButton" layoutX="491.0" layoutY="87.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="95.0" text="Set Bounds">
+      <CheckBox fx:id="fillCheckbox" layoutX="501.0" layoutY="89.0" mnemonicParsing="false" text="Fill Figure" textAlignment="CENTER" />
+      <Label layoutX="182.0" layoutY="61.0" text="Stroke:" />
+      <Label layoutX="192.0" layoutY="89.0" text="Fill:" />
+      <ColorPicker fx:id="fillColorPicker" layoutX="236.0" layoutY="85.0">
          <cursor>
-            <Cursor fx:constant="DISAPPEAR" />
+            <Cursor fx:constant="HAND" />
          </cursor>
-      </Button>
+      </ColorPicker>
    </children>
 </AnchorPane>
