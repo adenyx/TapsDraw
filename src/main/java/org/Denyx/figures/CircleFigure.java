@@ -1,14 +1,21 @@
 package org.Denyx.figures;
 
 import javafx.scene.canvas.GraphicsContext;
+import org.Denyx.actions.Actions;
+
 import java.util.List;
 
 public class CircleFigure extends Figure {
+    private String figureType = "circle";
 
+    @Override
+    public String getFigureType() {
+        return figureType;
+    }
 
     @Override
     public void preview(double[] startCoords, double[] endCoords, GraphicsContext gc) {
-        gc.clearRect(0, 0, 600, 286);
+        Actions.clear(gc);
         gc.setStroke(getStrokeFigureColor());
         gc.setLineWidth(getFigureLineWidth());
         double startX = Math.min(startCoords[0], endCoords[0]);

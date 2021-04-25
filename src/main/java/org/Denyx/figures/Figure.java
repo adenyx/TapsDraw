@@ -7,19 +7,10 @@ import java.util.List;
 
 public abstract class Figure {
 
-    private String figureType;
     private Color lineColor;
     private Color fillColor;
     private int lineWidth;
     private boolean isNeedToFillFigure;
-
-    public String getFigureType() {
-        return this.figureType;
-    }
-
-    public void setFigureType(String type) {
-        this.figureType = type;
-    }
 
     public Color getStrokeFigureColor() {
         return this.lineColor;
@@ -49,6 +40,8 @@ public abstract class Figure {
     public boolean isNeedToFillFigure() {
         return this.isNeedToFillFigure;
     }
+
+    public abstract String getFigureType();
 
     public abstract void draw(List<double[]> figureCoords, GraphicsContext gc);
 

@@ -103,6 +103,11 @@ public class PrimaryController {
     private Figure currentFigure;
     private double[] previewStartCoords = {NaN, NaN};
     private List<double[]> figureCoords = new ArrayList<>();
+    private List<List<double[]>> figuresCoordsHistory = new ArrayList<>(); // matrix? no! list of lists? yes!
+    private List<Figure> figuresHistory = new ArrayList<>();
+    private List<List<double[]>> deletedFigureCoords = new ArrayList<>(); // matrix? no! list of lists? yes!
+    private List<Figure> deletedFigures = new ArrayList<>();
+
     @FXML
     void initialize() {
         GraphicsContext drawGraphicsContext = drawZone.getGraphicsContext2D();
@@ -117,7 +122,10 @@ public class PrimaryController {
         openButton.setOnAction(actionEvent -> Actions.showAlertWindow("info", "Coming soon...", "Will be available in the next updates!"));
         saveButton.setOnAction(actionEvent -> Actions.showAlertWindow("info", "Coming soon...", "Will be available in the next updates!"));
         saveAsButton.setOnAction(actionEvent -> Actions.showAlertWindow("info", "Coming soon...", "Will be available in the next updates!"));
-        undoButton.setOnAction(actionEvent -> Actions.showAlertWindow("info", "Coming soon...", "Will be available in the next updates!"));
+        undoButton.setOnAction(actionEvent -> {
+            System.out.println("EMPTY ARRAY: " + figuresHistory);
+            Actions.undo(figuresHistory, deletedFigures, figuresCoordsHistory, deletedFigureCoords, drawGraphicsContext);
+        });
         redoButton.setOnAction(actionEvent -> Actions.showAlertWindow("info", "Coming soon...", "Will be available in the next updates!"));
         aboutButton.setOnAction(actionEvent -> Actions.showAlertWindow("info", "About", "TapsDraw by Denyx"));
         clearButton.setOnAction(actionEvent -> {
@@ -154,7 +162,6 @@ public class PrimaryController {
             fillCheckbox.setSelected(false);
             polygonBackground.setStyle("-fx-background-color: #FFFFFF");
             currentFigure = new PolygonFigure();
-            currentFigure.setFigureType("polygon");
             Actions.showAlertWindow("info", "Help", "To stop drawing press ENTER");
         });
 
@@ -163,7 +170,6 @@ public class PrimaryController {
             fillCheckbox.setSelected(false);
             polylineBackground.setStyle("-fx-background-color: #FFFFFF");
             currentFigure = new PolylineFigure();
-            currentFigure.setFigureType("polyline");
             Actions.showAlertWindow("info", "Help", "To stop drawing press ENTER");
         });
 
@@ -207,6 +213,11 @@ public class PrimaryController {
                 currentFigure.draw(figureCoords, drawGraphicsContext);
                 previewStartCoords = new double[] {NaN, NaN};
                 if (currentFigure.getFigureType() != "polyline" && currentFigure.getFigureType() != "polygon"){
+                    figuresHistory.add(currentFigure);
+                    figuresCoordsHistory.add(figureCoords);
+//                    System.out.println(figureCoords);
+//                    System.out.println(figuresCoordsHistory);
+                    System.out.println("FULL ARRAY: " + figuresHistory);
                     figureCoords.clear();
                 }
                 drawZone.requestFocus();
@@ -215,6 +226,8 @@ public class PrimaryController {
 
         drawZone.setOnKeyReleased(keyEvent -> {
             if (keyEvent.getCode() == KeyCode.ENTER) {
+                figuresHistory.add(currentFigure);
+                figuresCoordsHistory.add(figureCoords);
                 figureCoords.clear();
             }
         });

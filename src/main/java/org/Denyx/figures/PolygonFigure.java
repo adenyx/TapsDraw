@@ -5,8 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PolygonFigure extends Figure {
+    private String figureType = "polygon";
     List<Double> xCoordsList = new ArrayList<>();
     List<Double> yCoordsList = new ArrayList<>();
+
+    @Override
+    public String getFigureType() {
+        return figureType;
+    }
 
     @Override
     public void preview(double[] startCoords, double[] endCoords, GraphicsContext gc) {
@@ -15,7 +21,6 @@ public class PolygonFigure extends Figure {
 
     @Override
     public void draw(List<double[]> figureCoords, GraphicsContext gc) {
-        gc.clearRect(0, 0, 600, 286);
         gc.setStroke(getStrokeFigureColor());
         gc.setFill(getStrokeFigureColor());
         gc.setLineWidth(getFigureLineWidth());

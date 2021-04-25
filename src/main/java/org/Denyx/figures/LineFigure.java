@@ -1,13 +1,21 @@
 package org.Denyx.figures;
 
 import javafx.scene.canvas.GraphicsContext;
+import org.Denyx.actions.Actions;
+
 import java.util.List;
 
 public class LineFigure extends Figure {
+    private String figureType = "line";
+
+    @Override
+    public String getFigureType() {
+        return figureType;
+    }
 
     @Override
     public void preview (double[] startCoords, double[] endCoords, GraphicsContext gc) {
-        gc.clearRect(0, 0, 600, 286);
+        Actions.clear(gc);
         gc.setStroke(getStrokeFigureColor());
         gc.setLineWidth(getFigureLineWidth());
         gc.strokeLine(startCoords[0], startCoords[1], endCoords[0], endCoords[1]);
