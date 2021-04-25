@@ -103,9 +103,9 @@ public class PrimaryController {
     private Figure currentFigure;
     private double[] previewStartCoords = {NaN, NaN};
     private List<double[]> figureCoords = new ArrayList<>();
-    private List<List<double[]>> figuresCoordsHistory = new ArrayList<>(); // matrix? no! list of lists? yes!
+    private List<double[][]> figuresCoordsHistory = new ArrayList<>();
     private List<Figure> figuresHistory = new ArrayList<>();
-    private List<List<double[]>> deletedFigureCoords = new ArrayList<>(); // matrix? no! list of lists? yes!
+    private List<double[][]> deletedFigureCoords = new ArrayList<>();
     private List<Figure> deletedFigures = new ArrayList<>();
 
     @FXML
@@ -122,11 +122,8 @@ public class PrimaryController {
         openButton.setOnAction(actionEvent -> Actions.showAlertWindow("info", "Coming soon...", "Will be available in the next updates!"));
         saveButton.setOnAction(actionEvent -> Actions.showAlertWindow("info", "Coming soon...", "Will be available in the next updates!"));
         saveAsButton.setOnAction(actionEvent -> Actions.showAlertWindow("info", "Coming soon...", "Will be available in the next updates!"));
-        undoButton.setOnAction(actionEvent -> {
-            System.out.println("EMPTY ARRAY: " + figuresHistory);
-            Actions.undo(figuresHistory, deletedFigures, figuresCoordsHistory, deletedFigureCoords, drawGraphicsContext);
-        });
-        redoButton.setOnAction(actionEvent -> Actions.showAlertWindow("info", "Coming soon...", "Will be available in the next updates!"));
+        undoButton.setOnAction(actionEvent -> Actions.undo(figuresHistory, deletedFigures, figuresCoordsHistory, deletedFigureCoords, drawGraphicsContext));
+        redoButton.setOnAction(actionEvent -> Actions.redo(figuresHistory, deletedFigures, figuresCoordsHistory, deletedFigureCoords, drawGraphicsContext));
         aboutButton.setOnAction(actionEvent -> Actions.showAlertWindow("info", "About", "TapsDraw by Denyx"));
         clearButton.setOnAction(actionEvent -> {
             Actions.clear(drawGraphicsContext);
@@ -214,10 +211,14 @@ public class PrimaryController {
                 previewStartCoords = new double[] {NaN, NaN};
                 if (currentFigure.getFigureType() != "polyline" && currentFigure.getFigureType() != "polygon"){
                     figuresHistory.add(currentFigure);
-                    figuresCoordsHistory.add(figureCoords);
-//                    System.out.println(figureCoords);
-//                    System.out.println(figuresCoordsHistory);
-                    System.out.println("FULL ARRAY: " + figuresHistory);
+                    double[][] coords = new double[figureCoords.size()][figureCoords.size()];
+                    for (int i = 0; i <= figureCoords.size() - 1; i++) {
+                        coords[i][0] = figureCoords.get(i)[0];
+                        coords[i][1] = figureCoords.get(i)[1];
+                    }
+                    figuresCoordsHistory.add(coords);
+                    deletedFigureCoords.clear();
+                    deletedFigures.clear();
                     figureCoords.clear();
                 }
                 drawZone.requestFocus();
@@ -227,7 +228,14 @@ public class PrimaryController {
         drawZone.setOnKeyReleased(keyEvent -> {
             if (keyEvent.getCode() == KeyCode.ENTER) {
                 figuresHistory.add(currentFigure);
-                figuresCoordsHistory.add(figureCoords);
+                double[][] coords = new double[figureCoords.size()][figureCoords.size()];
+                for (int i = 0; i < figureCoords.size() - 1; i++) {
+                    coords[i][0] = figureCoords.get(i)[0];
+                    coords[i][1] = figureCoords.get(i)[1];
+                }
+                figuresCoordsHistory.add(coords);
+                deletedFigureCoords.clear();
+                deletedFigures.clear();
                 figureCoords.clear();
             }
         });
