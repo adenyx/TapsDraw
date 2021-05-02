@@ -127,6 +127,10 @@ public class PrimaryController {
         aboutButton.setOnAction(actionEvent -> Actions.showAlertWindow("info", "About", "TapsDraw by Denyx"));
         clearButton.setOnAction(actionEvent -> {
             Actions.clear(drawGraphicsContext);
+            figuresHistory.clear();
+            figuresCoordsHistory.clear();
+            deletedFigureCoords.clear();
+            deletedFigures.clear();
             figureCoords.clear();
         });
 
@@ -209,7 +213,7 @@ public class PrimaryController {
                 previewZone.setVisible(false);
                 currentFigure.draw(figureCoords, drawGraphicsContext);
                 previewStartCoords = new double[] {NaN, NaN};
-                if (currentFigure.getFigureType() != "polyline" && currentFigure.getFigureType() != "polygon"){
+                if (!currentFigure.getFigureType().equals("polyline") && !currentFigure.getFigureType().equals("polygon")){
                     figuresHistory.add(currentFigure);
                     double[][] coords = new double[figureCoords.size()][figureCoords.size()];
                     for (int i = 0; i <= figureCoords.size() - 1; i++) {
@@ -229,7 +233,7 @@ public class PrimaryController {
             if (keyEvent.getCode() == KeyCode.ENTER) {
                 figuresHistory.add(currentFigure);
                 double[][] coords = new double[figureCoords.size()][figureCoords.size()];
-                for (int i = 0; i < figureCoords.size() - 1; i++) {
+                for (int i = 0; i <= figureCoords.size() - 1; i++) {
                     coords[i][0] = figureCoords.get(i)[0];
                     coords[i][1] = figureCoords.get(i)[1];
                 }
