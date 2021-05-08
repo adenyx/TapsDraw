@@ -41,7 +41,7 @@ public abstract class Figure {
         return this.isNeedToFillFigure;
     }
 
-    public abstract String getFigureType();
+    public abstract Boolean isFigurePolygonal();
 
     public abstract void draw(List<double[]> figureCoords, GraphicsContext gc);
 

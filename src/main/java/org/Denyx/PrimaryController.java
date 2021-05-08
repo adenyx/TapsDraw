@@ -211,9 +211,15 @@ public class PrimaryController {
             if (currentFigure != null) {
                 figureCoords.add(new double[] {mouseEvent.getX(), mouseEvent.getY()});
                 previewZone.setVisible(false);
-                currentFigure.draw(figureCoords, drawGraphicsContext);
+                if (figureCoords.size() > 1 || currentFigure.isFigurePolygonal()) {
+                    currentFigure.draw(figureCoords, drawGraphicsContext);
+                } else {
+                    Actions.showAlertWindow("error", "Draw Error", "Please, drag your mouse!");
+                    figureCoords.clear();
+                    return;
+                }
                 previewStartCoords = new double[] {NaN, NaN};
-                if (!currentFigure.getFigureType().equals("polyline") && !currentFigure.getFigureType().equals("polygon")){
+                if (!currentFigure.isFigurePolygonal()){
                     figuresHistory.add(currentFigure);
                     double[][] coords = new double[figureCoords.size()][figureCoords.size()];
                     for (int i = 0; i <= figureCoords.size() - 1; i++) {

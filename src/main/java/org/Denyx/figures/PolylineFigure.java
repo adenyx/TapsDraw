@@ -6,11 +6,11 @@ import org.Denyx.actions.Actions;
 import java.util.List;
 
 public class PolylineFigure extends Figure {
-    private String figureType = "polyline";
+    private Boolean isFigurePolygonal = true;
 
     @Override
-    public String getFigureType() {
-        return figureType;
+    public Boolean isFigurePolygonal() {
+        return this.isFigurePolygonal;
     }
 
     @Override
@@ -26,9 +26,11 @@ public class PolylineFigure extends Figure {
         if (figureCoords.size() > 1) {
             gc.setStroke(getStrokeFigureColor());
             gc.setLineWidth(getFigureLineWidth());
-            double[] startCoords = figureCoords.get(figureCoords.size() - 2);
-            double[] endCoords = figureCoords.get(figureCoords.size() - 1);
-            gc.strokeLine(startCoords[0], startCoords[1], endCoords[0], endCoords[1]);
+            for (int i = figureCoords.size() - 1; i > 0; i--) {
+                double[] startCoords = figureCoords.get(i - 1);
+                double[] endCoords = figureCoords.get(i);
+                gc.strokeLine(startCoords[0], startCoords[1], endCoords[0], endCoords[1]);
+            }
         }
     }
 }

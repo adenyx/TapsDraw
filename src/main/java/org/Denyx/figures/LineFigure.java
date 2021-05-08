@@ -6,11 +6,11 @@ import org.Denyx.actions.Actions;
 import java.util.List;
 
 public class LineFigure extends Figure {
-    private String figureType = "line";
+    private Boolean isFigurePolygonal = false;
 
     @Override
-    public String getFigureType() {
-        return figureType;
+    public Boolean isFigurePolygonal() {
+        return this.isFigurePolygonal;
     }
 
     @Override

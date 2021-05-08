@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PolygonFigure extends Figure {
-    private String figureType = "polygon";
+    private Boolean isFigurePolygonal = true;
     List<Double> xCoordsList = new ArrayList<>();
     List<Double> yCoordsList = new ArrayList<>();
 
     @Override
-    public String getFigureType() {
-        return figureType;
+    public Boolean isFigurePolygonal() {
+        return this.isFigurePolygonal;
     }
 
     @Override
