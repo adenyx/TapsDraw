@@ -1,12 +1,14 @@
 package org.Denyx.figures;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 import org.Denyx.actions.Actions;
 
 import java.util.List;
 
 public class CircleFigure extends Figure {
     private Boolean isFigurePolygonal = false;
+    private int figureType = 2;
 
     @Override
     public Boolean isFigurePolygonal() {
@@ -14,9 +16,14 @@ public class CircleFigure extends Figure {
     }
 
     @Override
+    public int getFigureType() {
+        return this.figureType;
+    }
+
+    @Override
     public void preview(double[] startCoords, double[] endCoords, GraphicsContext gc) {
         Actions.clear(gc);
-        gc.setStroke(getStrokeFigureColor());
+        gc.setStroke(Color.web(getStrokeFigureColor()));
         gc.setLineWidth(getFigureLineWidth());
         double startX = Math.min(startCoords[0], endCoords[0]);
         double startY = Math.min(startCoords[1], endCoords[1]);
@@ -24,14 +31,14 @@ public class CircleFigure extends Figure {
         double endY = (endCoords[1] - startCoords[1] > 0) ? endCoords[1] - startCoords[1] : startCoords[1] - endCoords[1];
         gc.strokeOval(startX, startY, endX, endY);
         if (isNeedToFillFigure()) {
-            gc.setFill(getFillFigureColor());
+            gc.setFill(Color.web(getFillFigureColor()));
             gc.fillOval(startX, startY, endX, endY);
         }
     }
 
     @Override
     public void draw(List<double[]> figureCoords, GraphicsContext gc) {
-        gc.setStroke(getStrokeFigureColor());
+        gc.setStroke(Color.web(getStrokeFigureColor()));
         gc.setLineWidth(getFigureLineWidth());
         double[] startCoords = figureCoords.get(0);
         double[] endCoords = figureCoords.get(1);
@@ -41,7 +48,7 @@ public class CircleFigure extends Figure {
         double endY = (endCoords[1] - startCoords[1] > 0) ? endCoords[1] - startCoords[1] : startCoords[1] - endCoords[1];
         gc.strokeOval(startX, startY, endX, endY);
         if (isNeedToFillFigure()) {
-            gc.setFill(getFillFigureColor());
+            gc.setFill(Color.web(getFillFigureColor()));
             gc.fillOval(startX, startY, endX, endY);
         }
     }

@@ -7,22 +7,22 @@ import java.util.List;
 
 public abstract class Figure {
 
-    private Color lineColor;
-    private Color fillColor;
+    private String lineColor;
+    private String fillColor;
     private int lineWidth;
     private boolean isNeedToFillFigure;
 
-    public Color getStrokeFigureColor() {
+    public String getStrokeFigureColor() {
         return this.lineColor;
     }
 
-    public Color getFillFigureColor() {
+    public String getFillFigureColor() {
         return this.fillColor;
     }
 
     public void setFigureColor(Color strokeColor, Color fillColor) {
-        this.lineColor = strokeColor;
-        this.fillColor = fillColor;
+        this.lineColor = toHEX(strokeColor);
+        this.fillColor = toHEX(fillColor);
     }
 
     public int getFigureLineWidth() {
@@ -43,8 +43,14 @@ public abstract class Figure {
 
     public abstract Boolean isFigurePolygonal();
 
+    public abstract int getFigureType();
+
     public abstract void draw(List<double[]> figureCoords, GraphicsContext gc);
 
     public abstract void preview(double[] startCoords, double[] endCoords, GraphicsContext gc);
+
+    private String toHEX(Color color){
+        return String.format("#%02X%02X%02X", (int)(color.getRed() * 255.0D), (int)(color.getGreen() * 255.0D), (int)(color.getBlue() * 255.0D));
+    }
 
 }

@@ -1,9 +1,9 @@
 package org.Denyx;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
@@ -13,6 +13,9 @@ import javafx.scene.image.ImageView;
 
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import javafx.util.Pair;
 import org.Denyx.actions.Actions;
 import org.Denyx.figures.*;
 
@@ -107,6 +110,7 @@ public class PrimaryController {
     private List<Figure> figuresHistory = new ArrayList<>();
     private List<double[][]> deletedFigureCoords = new ArrayList<>();
     private List<Figure> deletedFigures = new ArrayList<>();
+    private Map<Integer, Class> mapFigureTypes = new HashMap<>();
 
     @FXML
     void initialize() {
@@ -116,11 +120,35 @@ public class PrimaryController {
         previewZone.setVisible(false);
         drawZone.setFocusTraversable(true);
 
+        mapFigureTypes = initFigureTypes();
+
         /*
-        * Button actions
+        * Buttons actions
         */
-        openButton.setOnAction(actionEvent -> Actions.showAlertWindow("info", "Coming soon...", "Will be available in the next updates!"));
-        saveButton.setOnAction(actionEvent -> Actions.showAlertWindow("info", "Coming soon...", "Will be available in the next updates!"));
+        openButton.setOnAction(actionEvent -> {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Open file");
+            File file = fileChooser.showOpenDialog(Stage.getWindows().get(0));
+            if (file != null){
+                try {
+                    deletedFigures.clear();
+                    deletedFigureCoords.clear();
+                    Pair<List<Figure>, List<double[][]>> fileData = Actions.open(file, mapFigureTypes, drawGraphicsContext);
+                    figuresHistory = fileData.getKey();
+                    figuresCoordsHistory = fileData.getValue();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        saveButton.setOnAction(actionEvent -> {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Save file:");
+            File file = fileChooser.showSaveDialog(Stage.getWindows().get(0));
+            if (file != null){
+                Actions.save(figuresHistory, figuresCoordsHistory, file);
+            }
+        });
         saveAsButton.setOnAction(actionEvent -> Actions.showAlertWindow("info", "Coming soon...", "Will be available in the next updates!"));
         undoButton.setOnAction(actionEvent -> Actions.undo(figuresHistory, deletedFigures, figuresCoordsHistory, deletedFigureCoords, drawGraphicsContext));
         redoButton.setOnAction(actionEvent -> Actions.redo(figuresHistory, deletedFigures, figuresCoordsHistory, deletedFigureCoords, drawGraphicsContext));
@@ -260,5 +288,15 @@ public class PrimaryController {
         circleBackground.setStyle("-fx-background-color: #bcbcbc");
         polygonBackground.setStyle("-fx-background-color: #bcbcbc");
         polylineBackground.setStyle("-fx-background-color: #bcbcbc");
+    }
+
+    private Map<Integer, Class> initFigureTypes() {
+        Map<Integer, Class> map = new HashMap<>();
+        map.put(1, LineFigure.class);
+        map.put(2, CircleFigure.class);
+        map.put(3, RectangleFigure.class);
+        map.put(4, PolylineFigure.class);
+        map.put(5, PolygonFigure.class);
+        return map;
     }
 }

@@ -1,11 +1,14 @@
 package org.Denyx.figures;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class PolygonFigure extends Figure {
     private Boolean isFigurePolygonal = true;
+    private int figureType = 5;
     List<Double> xCoordsList = new ArrayList<>();
     List<Double> yCoordsList = new ArrayList<>();
 
@@ -15,14 +18,19 @@ public class PolygonFigure extends Figure {
     }
 
     @Override
+    public int getFigureType() {
+        return this.figureType;
+    }
+
+    @Override
     public void preview(double[] startCoords, double[] endCoords, GraphicsContext gc) {
 
     }
 
     @Override
     public void draw(List<double[]> figureCoords, GraphicsContext gc) {
-        gc.setStroke(getStrokeFigureColor());
-        gc.setFill(getStrokeFigureColor());
+        gc.setStroke(Color.web(getStrokeFigureColor()));
+        gc.setFill(Color.web(getStrokeFigureColor()));
         gc.setLineWidth(getFigureLineWidth());
         for (int j = 0; j < figureCoords.size(); j++) {
             xCoordsList.add(figureCoords.get(j)[0]);
