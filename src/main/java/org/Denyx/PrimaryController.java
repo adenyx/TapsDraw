@@ -2,6 +2,7 @@ package org.Denyx;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.*;
 
@@ -202,6 +203,20 @@ public class PrimaryController {
             Actions.showAlertWindow("info", "Help", "To stop drawing press ENTER");
         });
 
+        ellipsisButton.setOnMouseClicked(mouseEvent -> {
+            if (isClass("org.example2.FigureTrapezoid")) {
+                buttonsClearBackground();
+                fillCheckbox.setSelected(false);
+                ellipsesBackground.setStyle("-fx-background-color: #FFFFFF");
+                try {
+                    currentFigure = (Class.forName("org.example2.FigureTrapezoid").asSubclass(Figure.class).getConstructor().newInstance());
+                } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+                Actions.showAlertWindow("info", "Help", "To stop drawing press ENTER");
+            }
+        });
+
         fillCheckbox.setOnAction(actionEvent -> {
             currentFigure.setNeedToFillFigure(fillCheckbox.isSelected());
         });
@@ -297,6 +312,23 @@ public class PrimaryController {
         map.put(3, RectangleFigure.class);
         map.put(4, PolylineFigure.class);
         map.put(5, PolygonFigure.class);
+
+        if (isClass("org.example2.FigureTrapezoid")) {
+            try {
+                map.put(6, Class.forName("org.example2.FigureTrapezoid"));
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
         return map;
+    }
+
+    private boolean isClass(String classname) {
+        try {
+            Class.forName(classname.trim());
+            return true;
+        } catch (ClassNotFoundException e) {
+            return false;
+        }
     }
 }

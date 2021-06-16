@@ -25,6 +25,13 @@
             <artifactId>gson</artifactId>
             <version>2.8.6</version>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.example2</groupId>-->
+<!--            <artifactId>Trapezoid</artifactId>-->
+<!--            <version>1.0-SNAPSHOT</version>-->
+<!--            <scope>system</scope>-->
+<!--            <systemPath>${basedir}/src/main/resources/lib/Trapezoid-1.0-SNAPSHOT.jar</systemPath>-->
+<!--        </dependency>-->
     </dependencies>
     <build>
         <plugins>
