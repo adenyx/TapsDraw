@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 import javafx.util.Pair;
 import org.Denyx.actions.Actions;
 import org.Denyx.figures.*;
+import org.example.Figure;
 
 import static java.lang.Double.*;
 
@@ -115,6 +116,7 @@ public class PrimaryController {
 
     @FXML
     void initialize() {
+
         GraphicsContext drawGraphicsContext = drawZone.getGraphicsContext2D();
         GraphicsContext previewGraphicsContext = previewZone.getGraphicsContext2D();
 
@@ -213,7 +215,6 @@ public class PrimaryController {
                 } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
                     e.printStackTrace();
                 }
-                Actions.showAlertWindow("info", "Help", "To stop drawing press ENTER");
             }
         });
 

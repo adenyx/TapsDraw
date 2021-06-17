@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.util.Pair;
-import org.Denyx.figures.Figure;
+import org.example.Figure;
 
 import java.io.*;
 import java.util.ArrayList;

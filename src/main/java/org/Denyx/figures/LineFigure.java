@@ -3,6 +3,7 @@ package org.Denyx.figures;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import org.Denyx.actions.Actions;
+import org.example.Figure;
 
 import java.util.List;
 
